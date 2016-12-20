@@ -121,7 +121,8 @@ namespace SocketIO
 
 		public void Start()
 		{
-			if (autoConnect) { Connect(); }
+            //if (autoConnect) { Connect(); }
+            Connect();
 		}
 
 		public void Update()
