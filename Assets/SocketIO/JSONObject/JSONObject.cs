@@ -985,7 +985,8 @@ public class JSONObject {
 		Debug.LogWarning("Tried to turn non-Object JSONObject into a dictionary");
 		return null;
 	}
-	public static implicit operator bool(JSONObject o) {
+
+    public static implicit operator bool(JSONObject o) {
 		return o != null;
 	}
 #if POOLING

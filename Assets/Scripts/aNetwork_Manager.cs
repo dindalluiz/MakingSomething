@@ -4,13 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using SocketIO;
 
-public class Network_Manager : MonoBehaviour
+public class aNetwork_Manager : MonoBehaviour
 {
     [SerializeField]
     SocketIOComponent socket;
 
     [SerializeField]
     GameObject infoObj;
+
+    private Dictionary<string, string> data;
 
     Text info;
 
@@ -22,24 +24,25 @@ public class Network_Manager : MonoBehaviour
         socket.On("open", OnOpen);
         socket.On("error", OnError);
         socket.On("close", OnClose);
+        socket.On("updatePos", UpdatePos);
+        data = new Dictionary<string, string>();
+        data["id"] = socket.sid;
+        data["x"] = gameObject.transform.position.x.ToString();
+        data["y"] = gameObject.transform.position.y.ToString();
     }
 
     void Update()
     {
-        Dictionary<string, string> data = new Dictionary<string, string>();
-        data["login"] = "user";
-        data["pass"] = "123";
-
         if (Input.GetKeyDown(KeyCode.A))
         {
-            socket.Emit("login", new JSONObject(data), Login);
+            socket.Emit("updatePos", new JSONObject(data));            
             Debug.Log("apertei");
         }
     }
 
-    public void Login(JSONObject e)
+    public void UpdatePos(SocketIOEvent e)
     {
-        if (e.GetField("message").str == "true")
+        if (e.data.GetField("message").str == "true")
         {
             this.info.text += "\nLogadão nessa caralha";
         }

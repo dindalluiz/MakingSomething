@@ -1,9 +1,17 @@
-function Player(_id, _x, _y, _name, _socket)
+function Player()
 {
-	this.id = _id;
-	this.x = _x;
-	this.y = _y;
-	this.name = _name;
+	this.id = null;
+	this.name = null;
 	this.room = null;
-	this.socket = _socket;
+	this.server = [];
+	
+	this.addServer = function(_server)
+	{
+		this.server.push(_server);
+	}
+}
+
+module.exports.create = function()
+{
+	return new Player();
 }
