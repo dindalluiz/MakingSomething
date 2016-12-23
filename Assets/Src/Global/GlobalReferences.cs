@@ -10,13 +10,28 @@ public class GlobalReferences : MonoBehaviour
     private Network_Manager networkManager;
     private static Network_Manager networkManagerStatic;
 
+    public static string ID;
+
     [SerializeField]
-    private Text txtNick, txtUsersList;
-    private static Text txtNickStatic, txtUsersListStatic;
+    private Text txtNick, txtUsersList, txtMessages;
+    private static Text txtNickStatic, txtUsersListStatic, txtMessagesStatic;
 
     [SerializeField]
     private GameObject panelNick, panelLobby;
     private static GameObject panelNickStatic, panelLobbyStatic;
+
+    [SerializeField]
+    private InputField inputMessageArea;
+    private static InputField inputMessageAreaStatic;
+
+    public static void ChangeID(SocketIOEvent e)
+    {
+        SocketIOComponent server = networkManagerStatic.getServer(Network_Helper.Servers.lobby);
+        server.sid = e.data.GetField("id").str;
+        GlobalReferences.ID = server.sid;
+        Debug.Log("veio: " + e.data.GetField("oid").str);
+        Debug.Log("veio: " + e.data.GetField("porra").str);
+    }
 
     private void Start()
     {
@@ -25,6 +40,8 @@ public class GlobalReferences : MonoBehaviour
         txtUsersListStatic      = txtUsersList;
         panelNickStatic         = panelNick;
         panelLobbyStatic        = panelLobby;
+        inputMessageAreaStatic  = inputMessageArea;
+        txtMessagesStatic       = txtMessages;
     }
 
     #region GET/SET
@@ -90,6 +107,32 @@ public class GlobalReferences : MonoBehaviour
         set
         {
             panelLobbyStatic = value;
+        }
+    }
+
+    public static InputField InputMessageArea
+    {
+        get
+        {
+            return inputMessageAreaStatic;
+        }
+
+        set
+        {
+            inputMessageAreaStatic = value;
+        }
+    }
+
+    public static Text TxtMessagesStatic
+    {
+        get
+        {
+            return txtMessagesStatic;
+        }
+
+        set
+        {
+            txtMessagesStatic = value;
         }
     }
     #endregion

@@ -15,20 +15,26 @@ function getAllIDS()
 	for(i=0;i<helper.getPlayerList().length;i++)
 	{
 		if(helper.getPlayerList()[i] != null)
-			array.push(helper.getPlayerList()[i].id);
+			array.push(helper.getPlayerList()[i].customID);
 	}
 	
 	return array;
-} 
+}
 
 io.on('connection', function(socket){
-	var player = helper.player().create();
-	player.id = helper.generateID(getAllIDS(), 10);
-	socket.id = player.id;
-	console.log("["+player.id+"]"+" Connected");
-	helper.addPlayerList(socket.id, player);
-	console.log(helper.getPlayerList(), 'geral');
+	var player 		= helper.player().create();
+	player.customID = helper.generateID(getAllIDS(), 10);
+	player.id 		= socket.id;
+	console.log("["+player.customID+"]"+" Connected");
+	player.addServer("Lobby");
+	player.addIDServer(socket.id, "Lobby");
+	console.log(player.arrayIDServer);
 	
+	helper.addPlayerList(player.customID, player);
+	
+	socket.on('Teste', function(){
+		console.log(socket.id, "Mandou esse aaaaaaaaaaaaaaaaa");
+	});
 	
 	socket.on('SetName', function(data){
 		helper.setPlayerListName(socket.id, data.name);

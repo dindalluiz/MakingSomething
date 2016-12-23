@@ -21,9 +21,45 @@ module.exports.getPlayerList = function ()
 	return playerList;
 }
 
-module.exports.setPlayerListName = function (pos, name)
+module.exports.getAllPlayersInServer = function (server)
 {	
-	return playerList[pos].name = name;
+	var array = [];
+
+	for(i=0;i<playerList.length;i++)
+	{
+		for(j=0;j<playerList[i].server.length;j++)
+		{
+			if(playerList[i].server[j] == server)
+			{
+				array.push(playerList[i]);
+			}
+		}
+	}
+	
+	return array;
+}
+
+module.exports.getUserByID = function (id)
+{	
+	for(i=0;i<playerList.length;i++)
+	{
+		if(playerList[i].id == id)
+		{
+			return playerList[i];
+		}
+	}	
+}
+
+
+module.exports.setPlayerListName = function (id, name)
+{	
+	for(i=0;i<playerList.length;i++)
+	{
+		if(playerList[i].id == id)
+		{
+			return playerList[i].name = name;
+		}
+	}
 }
 
 module.exports.formatString = function (array, c)
@@ -44,9 +80,15 @@ module.exports.addPlayerList = function (pos, p)
 	return playerList[pos] = p;
 }
 
-module.exports.removePlayerList = function (pos, p)
-{	
-	return playerList[pos] = null;
+module.exports.removePlayerList = function (id)
+{
+	for(i=0;i<playerList.length;i++)
+	{
+		if(playerList[i].id == id)
+		{
+			return playerList[i] = null;
+		}
+	}	
 }
 
 module.exports.player = function()

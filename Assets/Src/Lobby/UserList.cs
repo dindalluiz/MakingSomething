@@ -19,7 +19,8 @@ public class UserList : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.A))
         {
-            Network_Helper.SendOperation(socket, "GetUsers");
+            Network_Helper.SendOperation(socket, "MyIDLobby");
+            Debug.Log("MEU ID NESSA PORRA E: " + GlobalReferences.ID);
         }
     }
 

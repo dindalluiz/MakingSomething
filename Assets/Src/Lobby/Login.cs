@@ -18,10 +18,12 @@ public class Login : MonoBehaviour
 
     IEnumerator login()
     {
-        while (GlobalReferences.NetworkManager.lobbyConnected == false)
+        /*while (GlobalReferences.NetworkManager.lobbyConnected == false)
         {
             yield return null;
-        }
+        }*/
+
+        yield return GlobalReferences.NetworkManager.lobbyConnected;
         serverLobby = GlobalReferences.NetworkManager.getServer(Network_Helper.Servers.lobby);
 
         Dictionary<string, string> data = new Dictionary<string, string>();
@@ -34,6 +36,11 @@ public class Login : MonoBehaviour
 
         GlobalReferences.PanelNick.SetActive(false);
         GlobalReferences.PanelLobby.SetActive(true);
+
+        Network_Helper.SendOperation(serverLobby, "MyIDLobby");
+        Network_Helper.ListenOperation(serverLobby, "ChangeID", GlobalReferences.ChangeID);
+
+        Debug.Log(serverLobby.sid + "ESSA PORRA AQUI");
     }
 
     IEnumerator chat()
@@ -44,5 +51,6 @@ public class Login : MonoBehaviour
         }
         serverChat = GlobalReferences.NetworkManager.getServer(Network_Helper.Servers.chat);
         Chat.StartListen(serverChat);
+        Debug.Log(serverChat.sid);
     }
 }

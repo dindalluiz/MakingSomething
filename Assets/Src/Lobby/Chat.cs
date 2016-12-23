@@ -6,33 +6,12 @@ using SocketIO;
 
 public class Chat : MonoBehaviour
 {
-    [SerializeField]
-    private Network_Manager networkManager;
-
-    [SerializeField]
-    private Text txtChat;
-
-    private static Text txtChatReal;
-
-    private void Start()
-    {
-        txtChatReal = txtChat;
-    }
-
-    private void Update()
-    {
-        txtChat = txtChatReal;
-    }
-
-    [SerializeField]
-    private InputField inputChat;
-
     static SocketIOComponent server;
 
     public static void StartListen(SocketIOComponent so)
     {
         server = so;
-        Network_Helper.ListenOperation(so, "Message", ReceiveMessage);
+        Network_Helper.ListenOperation(so, "ReceiveMessage", ReceiveMessage);
         Debug.Log("startou a ouvido");
     }
 
@@ -40,13 +19,13 @@ public class Chat : MonoBehaviour
     {
         Dictionary<string, string> data = new Dictionary<string, string>();
         data["channel"] = "Lobby";
-        data["message"] = this.inputChat.text;
-        Network_Helper.SendOperation(server, "Message", data);
+        data["sendMessage"] = GlobalReferences.InputMessageArea.text;
+        Network_Helper.SendOperation(server, "SendMessage", data);
     }
 
     private static void ReceiveMessage(SocketIOEvent e)
     {
         Debug.Log("penis:"+e.data.GetField("message").str);
-        txtChatReal.text += e.data.GetField("message").str+"\n";
+        GlobalReferences.TxtMessagesStatic.text += e.data.GetField("message").str+"\n";
     }
 }

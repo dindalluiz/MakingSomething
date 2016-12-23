@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using UnityEngine;
 using SocketIO;
 
@@ -30,6 +29,7 @@ public class Network_Manager : MonoBehaviour
         roomsSocket = roomsGO.GetComponent<SocketIOComponent>();
         gameSocket = gameGO.GetComponent<SocketIOComponent>();
     }
+ 
 
     public void Connect(Network_Helper.Servers sr)
     {
@@ -112,6 +112,10 @@ public class Network_Manager : MonoBehaviour
     {
         //Debug.Log("[SocketIO] Open received: " + e.name + " " + e.data);
         chatConnected = true;
+        chatSocket.sid = GlobalReferences.ID;
+        Dictionary<string, string> data = new Dictionary<string, string>();
+        data["id"] = GlobalReferences.ID;
+        Network_Helper.SendOperation(chatSocket, "MyIDChat", data);
     }
 
     public void OnError(SocketIOEvent e)
